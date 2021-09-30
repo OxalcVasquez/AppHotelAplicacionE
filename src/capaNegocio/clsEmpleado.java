@@ -106,6 +106,19 @@ public class clsEmpleado {
 
     }
     
+    public ResultSet listarEmpleadosVigentes() throws Exception {
+        strSQL = "select * from empleado where vigencia=true order by nombre";
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar empleados");
+
+        }
+
+    }
+    
    
 
 }

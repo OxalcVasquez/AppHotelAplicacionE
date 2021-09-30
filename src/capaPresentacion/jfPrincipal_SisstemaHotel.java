@@ -222,6 +222,11 @@ public class jfPrincipal_SisstemaHotel extends javax.swing.JFrame {
 
         jMenuItem12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jMenuItem12.setText("Hospedaje");
+        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem12ActionPerformed(evt);
+            }
+        });
         jmHospedajes.add(jMenuItem12);
 
         jMenuItem13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -349,6 +354,13 @@ public class jfPrincipal_SisstemaHotel extends javax.swing.JFrame {
         jdManTipoHabitacion objFrm = new jdManTipoHabitacion(this, true);
         objFrm.setVisible(true);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
+        // TODO add your handling code here:
+        jdHospedaje objFrm = new jdHospedaje(this, true);
+        objFrm.setVisible(true);
+
+    }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**
      * @param args the command line arguments

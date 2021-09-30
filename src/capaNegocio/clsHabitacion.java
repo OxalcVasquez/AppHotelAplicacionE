@@ -31,6 +31,20 @@ public class clsHabitacion {
         }
 
     }
+    //Método creado el 9/30
+       public ResultSet listarHabitacionesDisponibles(String tipoHabitacion) throws Exception {
+        strSQL = "select H.*,th.nombre as nombreth from habitacion h inner join tipo_habitacion th"
+                + " on h.codtipohabitacion = th.codtipohabitacion where estado='D' and th.nombre = '"+tipoHabitacion+"'";;
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones");
+
+        }
+
+    }
 
     public Integer generarCodigoH() throws Exception {
         strSQL = "select coalesce(max(codhabitacion),0)+1 as codigo from habitacion";
