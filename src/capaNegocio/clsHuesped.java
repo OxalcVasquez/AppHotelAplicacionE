@@ -131,8 +131,10 @@ public class clsHuesped {
         } catch (Exception e) {
             throw new Exception("Error  al buscar Huesped");
 
+            
         }
 
     }
 
+    
 }

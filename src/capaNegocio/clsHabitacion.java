@@ -149,5 +149,23 @@ public class clsHabitacion {
         }
 
     }
+     
+    public Double obtenerCostoHab(Integer numHabitacion) throws Exception{
+      strSQL = "select th.costo from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion where numero ="+numHabitacion;
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            if(rs.next()){
+            return rs.getDouble("costo");
+            }
+           
+        } catch (Exception e) {
+            throw new Exception("Error  al obtener costo de habitacion");
+
+        }
+
+        
+    return 0.0;
+    }
 
 }

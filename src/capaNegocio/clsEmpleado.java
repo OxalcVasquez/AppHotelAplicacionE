@@ -19,8 +19,7 @@ public class clsEmpleado {
 //    Statement sent;
     ResultSet rs = null;
 
-    
-     public ResultSet listarEmpleado() throws Exception {
+    public ResultSet listarEmpleado() throws Exception {
         strSQL = "select * from empleado";
 
         try {
@@ -32,10 +31,9 @@ public class clsEmpleado {
         }
 
     }
-     
-     
-       public ResultSet buscarEmpleado(String dni) throws Exception {
-        strSQL = "select * from empleado where dniempleado='"+dni+"'";
+
+    public ResultSet buscarEmpleado(String dni) throws Exception {
+        strSQL = "select * from empleado where dniempleado='" + dni + "'";
 
         try {
             rs = objConexion.consultarBD(strSQL);
@@ -46,6 +44,22 @@ public class clsEmpleado {
         }
 
     }
+
+    public String obtenerDniEmpleado(String nombre, String apellidos) throws Exception {
+        strSQL = "select dniempleado from empleado where nombre = '" + nombre + "' and apellidos  = '" + apellidos + "'";
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            if (rs.next()) {
+                return rs.getString("dniempleado");
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al verificar dni de empleado!");
+
+        }
+        return "";
+
+    }
+
     public Boolean verificarDNI(String dni) throws Exception {
         strSQL = "select * from empleado where dniempleado = '" + dni + "'";
         try {
@@ -105,7 +119,7 @@ public class clsEmpleado {
         }
 
     }
-    
+
     public ResultSet listarEmpleadosVigentes() throws Exception {
         strSQL = "select * from empleado where vigencia=true order by nombre";
 
@@ -118,7 +132,5 @@ public class clsEmpleado {
         }
 
     }
-    
-   
 
 }

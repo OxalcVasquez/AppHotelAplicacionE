@@ -80,7 +80,7 @@
                   <EmptySpace pref="33" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="txtCodigoHuesped" min="-2" pref="134" max="-2" attributes="0"/>
-                      <Component id="cboTipoDoc" min="-2" pref="119" max="-2" attributes="0"/>
+                      <Component id="cboTipoDoc" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
@@ -530,7 +530,7 @@
               <Color blue="99" green="0" red="0" type="rgb"/>
             </Property>
             <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="3" name="/Recursos/add32.png"/>
+              <Image iconType="3" name="/Recursos/add-user32.png"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Nuevo"/>
           </Properties>
