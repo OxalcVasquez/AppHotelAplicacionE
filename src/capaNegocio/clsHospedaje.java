@@ -59,4 +59,43 @@ public class clsHospedaje {
         }
 
     }
+
+    public ResultSet buscarHospedaje(Integer num) throws Exception {
+        strSQL = "select H.*,HU.tipodocumento,Hu.numdocumento, E.dniempleado, HA.numero as numHab "
+                + " from hospedaje H inner join huesped HU on H.codhuesped=HU.codhuesped "
+                + " inner join empleado E on H.dniempleado=E.dniempleado inner join habitacion HA on H.codhabitacion=HA.codhabitacion"
+                + " where H.numhospedaje=" + num;
+
+        try {
+            rs = objConectar.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al buscar hospedjaes");
+
+        }
+
+    }
+
+    public void modificarHospedaje(Integer num, String fecInicio, String fecFin, String mot, Double cos, Integer codHue, String dniEm, Integer codHabitacion, String obs) throws Exception {
+        strSQL = "UPDATE hospedaje SET  fechainicio='" + fecInicio + "', fechafin='" + fecFin + "', motivo='" + mot + "', costo=" + cos + ", codhuesped=" + codHue + ", dniempleado='" + dniEm + "', codhabitacion=" + codHabitacion + ", observacion=' " + obs + "'"
+                + " WHERE numhospedaje="+num;
+  
+        try {
+            objConectar.ejecutarBD(strSQL);
+
+        } catch (Exception e) {
+            throw new Exception("Error al modificar el hospedaje");
+        }
+    }
+    
+     public void eliminarHospedaje(Integer num) throws Exception {
+        strSQL = "DELETE FROM  hospedaje WHERE numhospedaje="+num;
+  
+        try {
+            objConectar.ejecutarBD(strSQL);
+
+        } catch (Exception e) {
+            throw new Exception("Error al eliminar el hospedaje");
+        }
+    }
 }

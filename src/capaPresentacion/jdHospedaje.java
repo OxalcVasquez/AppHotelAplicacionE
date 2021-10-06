@@ -658,10 +658,35 @@ public class jdHospedaje extends javax.swing.JDialog {
     }
     private void tblHospedajeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHospedajeMouseClicked
         // TODO add your handling code here:
+        txtNumHospedaje.setText(String.valueOf(tblHospedaje.getValueAt(tblHospedaje.getSelectedRow(), 0)));
+        btnBuscarHospedajeActionPerformed(null);
     }//GEN-LAST:event_tblHospedajeMouseClicked
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
+        try {
+
+            if (!txtNumHospedaje.getText().isEmpty()) {
+                objHospedaje.modificarHospedaje(Integer.parseInt(txtNumHospedaje.getText()),
+                        sdf.format(jdFechaInicio.getDate()),
+                        sdf.format(jdFechaFin.getDate()),
+                        txtMotivo.getText(),
+                        Double.parseDouble(txtCosto.getText()),
+                        codHuesped,
+                        //                        objEmpleado.obtenerDniEmpleado(cboRecepcionista.getSelectedItem().toString().split(" ")[0], cboRecepcionista.getSelectedItem().toString().split(" ")[1] + " " + cboRecepcionista.getSelectedItem().toString().split(" ")[2]),
+                        cboRecepcionista.getSelectedItem().toString(),
+                        Integer.parseInt(txtCodHab.getText()),
+                        txtObservacion.getText());
+                listarHospedajes();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Ingrese numero de hospedaje a modificar");
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -735,6 +760,21 @@ public class jdHospedaje extends javax.swing.JDialog {
     }
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
+        try {
+
+            if (!txtNumHospedaje.getText().isEmpty()) {
+                objHospedaje.eliminarHospedaje(Integer.parseInt(txtNumHospedaje.getText()));
+                        
+                listarHospedajes();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Ingrese numero de hospedaje a eliminar");
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnSalir1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalir1ActionPerformed
@@ -743,6 +783,51 @@ public class jdHospedaje extends javax.swing.JDialog {
 
     private void btnBuscarHospedajeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarHospedajeActionPerformed
         // TODO add your handling code here:
+        try {
+
+            if (!txtNumHospedaje.getText().isEmpty()) {
+                ResultSet rsHospedaje = objHospedaje.buscarHospedaje(Integer.parseInt(txtNumHospedaje.getText()));
+                if (rsHospedaje.next()) {
+                    //DNI, Pasaporte, Carnet Extranjería, Libreta Militar
+
+                    if (rsHospedaje.getString("tipodocumento").equals("D")) {
+                        cboTipoDoc.setSelectedIndex(0);
+                    } else if (rsHospedaje.getString("tipodocumento").equals("P")) {
+                        cboTipoDoc.setSelectedIndex(1);
+
+                    } else if (rsHospedaje.getString("tipodocumento").equals("C")) {
+                        cboTipoDoc.setSelectedIndex(2);
+
+                    } else {
+                        cboTipoDoc.setSelectedIndex(3);
+
+                    }
+
+                    txtDocumento.setText(rsHospedaje.getString("numdocumento"));
+                    btnBuscarHuespedActionPerformed(null);
+                    jdFechaInicio.setDate(rsHospedaje.getDate("fechaInicio"));
+                    jdFechaFin.setDate(rsHospedaje.getDate("fechaFin"));
+                    txtMotivo.setText(rsHospedaje.getString("motivo"));
+                    txtObservacion.setText(rsHospedaje.getString("observacion"));
+                    txtCosto.setText(String.valueOf(rsHospedaje.getDouble("costo")));
+                    txtNumHabitacion.setText(String.valueOf(rsHospedaje.getInt("numHab")));
+                    txtCodHab.setText(String.valueOf(rsHospedaje.getInt("codhabitacion")));
+                    cboRecepcionista.setSelectedItem(rsHospedaje.getString("dniempleado"));
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "El hospedaje ingresado no existe");
+                    limpiarHuesped();
+
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Por favor ingrese eel numero de hospedaje a consultar");
+
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
 
     }//GEN-LAST:event_btnBuscarHospedajeActionPerformed
 

@@ -31,10 +31,11 @@ public class clsHabitacion {
         }
 
     }
+
     //Método creado el 9/30
-       public ResultSet listarHabitacionesDisponibles(String tipoHabitacion) throws Exception {
+    public ResultSet listarHabitacionesDisponibles(String tipoHabitacion) throws Exception {
         strSQL = "select H.*,th.nombre as nombreth from habitacion h inner join tipo_habitacion th"
-                + " on h.codtipohabitacion = th.codtipohabitacion where estado='D' and th.nombre = '"+tipoHabitacion+"'";;
+                + " on h.codtipohabitacion = th.codtipohabitacion where estado='D' and th.nombre = '" + tipoHabitacion + "'";;
 
         try {
             rs = objConexion.consultarBD(strSQL);
@@ -73,8 +74,8 @@ public class clsHabitacion {
         }
         return true;
     }
-    
-        public Boolean verificarDisponibilidad(Integer cod) throws Exception {
+
+    public Boolean verificarDisponibilidad(Integer cod) throws Exception {
         strSQL = "select estado from habitacion where codhabitacion = " + cod + " and estado='O'";
         try {
             rs = objConexion.consultarBD(strSQL);
@@ -112,8 +113,8 @@ public class clsHabitacion {
         }
 
     }
-    
-     public void darDeBajaHabitacion(Integer cod) throws Exception {
+
+    public void darDeBajaHabitacion(Integer cod) throws Exception {
         strSQL = "update habitacion set  estado='M' where codhabitacion = " + cod + "";
 
         try {
@@ -124,8 +125,8 @@ public class clsHabitacion {
         }
 
     }
-    
-     public void eliminarHabitacion(Integer cod) throws Exception {
+
+    public void eliminarHabitacion(Integer cod) throws Exception {
         strSQL = "delete from habitacion where codhabitacion = " + cod + "";
 
         try {
@@ -136,9 +137,9 @@ public class clsHabitacion {
         }
 
     }
-    
-     public ResultSet buscarHabitacion(Integer num) throws Exception {
-        strSQL = "select H.*,th.nombre as nombreth from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion where numero ="+num;
+
+    public ResultSet buscarHabitacion(Integer num) throws Exception {
+        strSQL = "select H.*,th.nombre as nombreth from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion where numero =" + num;
 
         try {
             rs = objConexion.consultarBD(strSQL);
@@ -149,23 +150,40 @@ public class clsHabitacion {
         }
 
     }
-     
-    public Double obtenerCostoHab(Integer numHabitacion) throws Exception{
-      strSQL = "select th.costo from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion where numero ="+numHabitacion;
+
+    public Integer buscarCodHabitacion(Integer num) throws Exception {
+        strSQL = "select codhabitacion from habitacion where numero =" + num;
 
         try {
             rs = objConexion.consultarBD(strSQL);
-            if(rs.next()){
-            return rs.getDouble("costo");
+            if (rs.next()) {
+                return rs.getInt("codhabitacion");
             }
-           
+
         } catch (Exception e) {
             throw new Exception("Error  al obtener costo de habitacion");
 
         }
 
-        
-    return 0.0;
+        return 0;
+
+    }
+
+    public Double obtenerCostoHab(Integer numHabitacion) throws Exception {
+        strSQL = "select th.costo from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion where numero =" + numHabitacion;
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            if (rs.next()) {
+                return rs.getDouble("costo");
+            }
+
+        } catch (Exception e) {
+            throw new Exception("Error  al obtener costo de habitacion");
+
+        }
+
+        return 0.0;
     }
 
 }
