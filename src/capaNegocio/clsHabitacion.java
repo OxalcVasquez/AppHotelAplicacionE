@@ -186,4 +186,50 @@ public class clsHabitacion {
         return 0.0;
     }
 
+    public ResultSet listarHabitacionActual() throws Exception {
+        strSQL = "select * from habitacion h inner join reserva r on r.codhabitacion = h.codhabitacion where h.estado='D' "
+                + "and r.fechainicio = now()";
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones actual");
+
+        }
+
+    }
+
+    public ResultSet listarHabitacionPorTipo(String tipo) throws Exception {
+        strSQL = " select H.*,th.nombre as nombreth from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion "
+                + "where th.nombre = '" + tipo + "'";
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones por tipo");
+
+        }
+
+    }
+
+    public ResultSet listarHabitacionPorTipoFechas(String tipo, String fechaI, String fechaF) throws Exception {
+
+        strSQL = " select distinct h.*,th.nombre from habitacion H inner join tipo_habitacion TH on H.codtipohabitacion=TH.codtipohabitacion\n"
+                + " where H.estado='D' and th.nombre = '" + tipo + "' and h.codhabitacion not in (select distinct h.codhabitacion from habitacion H \n"
+                + " inner join tipo_habitacion TH on H.codtipohabitacion=TH.codtipohabitacion\n"
+                + " inner join reserva R on R.codhabitacion=H.codhabitacion\n"
+                + " where th.nombre = 'Simple' and r.fechainicio>='" + fechaI + "' \n"
+                + " and  r.fechainicio + r.cantidaddias <='" + fechaF + ")";
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones por tipo");
+
+        }
+
+    }
+
 }
