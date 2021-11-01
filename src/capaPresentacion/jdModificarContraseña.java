@@ -15,13 +15,11 @@ public class jdModificarContraseña extends javax.swing.JDialog {
     clsUsuario objUsuario = new clsUsuario();
     public String usuario;
 
-  
-
     public jdModificarContraseña(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-       // txtUsuario.setText(usuario);
+        // txtUsuario.setText(usuario);
 //        txtUsuario.setEnabled(false);
     }
 
@@ -237,9 +235,15 @@ public class jdModificarContraseña extends javax.swing.JDialog {
         try {
             if (validarUsuario() && validarCampos()) {
                 if (txtContrasena.getText().equals(txtConfirmar.getText())) {
-                    objUsuario.modificarContrasena(txtUsuario.getText(), txtContrasena.getText());
-                    JOptionPane.showMessageDialog(this, "Se ha modificado correctamente su contraseña");
-                    this.dispose();
+//                    objUsuario.modificarContrasena(txtUsuario.getText(), txtContrasena.getText());
+                    if (objUsuario.modificar(txtContrasena.getText(),txtUsuario.getText())) {
+                        JOptionPane.showMessageDialog(this, "Se ha modificado correctamente su contraseña");
+
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Ha ingresado su contrasena antigua, por favor ingrese nuevamente");
+
+                    }
+//                    this.dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
                 }

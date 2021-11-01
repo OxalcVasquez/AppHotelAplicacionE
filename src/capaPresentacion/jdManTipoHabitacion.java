@@ -56,6 +56,8 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTipoH = new javax.swing.JTable();
         btn = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
+        txtTotalTipo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestionar Tipo de Habitacion");
@@ -264,16 +266,29 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
             }
         });
 
+        jLabel6.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("TOTAL TIPO HABITACIONES:");
+
+        txtTotalTipo.setEditable(false);
+        txtTotalTipo.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel6)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTotalTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(23, 23, 23)))
                 .addContainerGap())
@@ -284,7 +299,10 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn)
+                    .addComponent(jLabel6)
+                    .addComponent(txtTotalTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -360,9 +378,14 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             if (!txtCodigo.getText().isEmpty()) {
-                objTH.eliminarTH(Integer.parseInt(txtCodigo.getText()));
-                limpiarControles();
-                listarTipoHabitaciones();
+                if (objTH.validarParaEliminar(Integer.parseInt(txtCodigo.getText()))) {
+                    objTH.eliminarTH_Transaccion(Integer.parseInt(txtCodigo.getText()));
+                    limpiarControles();
+                    listarTipoHabitaciones();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se ha podido eliminar dibido que existe hospedajes con la habitacion");
+
+                }
 
             } else {
                 JOptionPane.showMessageDialog(this, "Ingrese código a eliminar");
@@ -378,7 +401,16 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
         // TODO add your handling code here:
         try {
-            objTH.modificarTH(Integer.parseInt(txtCodigo.getText()), txtNombre.getText(), txtDescripcion.getText(), chkVigencia.isSelected(), Double.parseDouble(txtCosto.getText()));
+            objTH.modificarTH(Integer.parseInt(txtCodigo.getText()),
+                    txtNombre.getText(), txtDescripcion.getText(),
+                    Double.parseDouble(txtCosto.getText()));
+            if (chkVigencia.isSelected()) {
+                objTH.darAltaTH_Transaccion(Integer.parseInt(txtCodigo.getText()));
+
+            } else {
+                objTH.darBajaTH_Transaccion(Integer.parseInt(txtCodigo.getText()));
+
+            }
             limpiarControles();
 
         } catch (Exception e) {
@@ -421,7 +453,7 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
         // TODO add your handling code here:
         try {
             if (!txtCodigo.getText().isEmpty()) {
-                objTH.darBajarTH(Integer.parseInt(txtCodigo.getText()));
+                objTH.darBajaTH_Transaccion(Integer.parseInt(txtCodigo.getText()));
                 limpiarControles();
 
             } else {
@@ -445,7 +477,7 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
         tblTipoH.setModel(modelo);
 
         try {
-            rsListaTH = objTH.listarTH();
+            rsListaTH = objTH.listarTipoHab();
             while (rsListaTH.next()) {
                 if (rsListaTH.getString("vigencia").equals("t")) {
                     vigencia = "Vigente";
@@ -462,13 +494,19 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
                 });
 
             }
+            txtTotalTipo.setText(String.valueOf(objTH.totalTipoHab()));
+
         } catch (Exception e) {
+        } finally{
+        rsListaTH = null;
         }
 
     }
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         listarTipoHabitaciones();
+
+
     }//GEN-LAST:event_formWindowOpened
 
     private void tblTipoHMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTipoHMouseClicked
@@ -479,7 +517,7 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
         txtNombre.setText(String.valueOf(tblTipoH.getValueAt(tblTipoH.getSelectedRow(), 1)));
         txtDescripcion.setText(String.valueOf(tblTipoH.getValueAt(tblTipoH.getSelectedRow(), 2)));
         txtCosto.setText(String.valueOf(tblTipoH.getValueAt(tblTipoH.getSelectedRow(), 3)));
-        */
+         */
     }//GEN-LAST:event_tblTipoHMouseClicked
 
     /**
@@ -537,6 +575,7 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -546,5 +585,6 @@ public class jdManTipoHabitacion extends javax.swing.JDialog {
     private javax.swing.JTextField txtCosto;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtTotalTipo;
     // End of variables declaration//GEN-END:variables
 }

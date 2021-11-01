@@ -18,6 +18,8 @@ public class clsHuesped {
     String strSQL;
 //    Statement sent;
     ResultSet rs = null;
+    CallableStatement cs = null;
+    Connection con;
 
     public Integer generarCodigoHuesped() throws Exception {
         strSQL = "select coalesce(max(codhuesped),0)+1 as codigo from huesped";
@@ -33,12 +35,12 @@ public class clsHuesped {
         return 0;
     }
 
-    public Boolean verficarDocumento(String ndoc,char td) throws Exception {
+    public Boolean verficarDocumento(String ndoc, char td) throws Exception {
         strSQL = "SELECT * FROM huesped WHERE numdocumento='" + ndoc + "' and tipodocumento='" + td + "'";
 
         try {
             rs = objConexion.consultarBD(strSQL);
-            if(rs.next()){
+            if (rs.next()) {
                 return false;
             }
         } catch (Exception e) {
@@ -131,10 +133,84 @@ public class clsHuesped {
         } catch (Exception e) {
             throw new Exception("Error  al buscar Huesped");
 
-            
         }
 
     }
 
+    public String eliminarHuespedDNI(String dni) throws Exception {
+        strSQL = "{call f_eliminar_huesped_dni(?)}";
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            cs.setString(1, dni);
+            cs.registerOutParameter(1, Types.VARCHAR);
+            cs.execute();
+            return cs.getString(1);
+
+        } catch (Exception e) {
+            throw new Exception("Error  al eliminar");
+
+        } finally {
+            objConexion.desconectarBD();
+            cs.close();
+        }
+   
+    }
     
+    public ResultSet listarHuespedAlfabeticamente() throws Exception{
+        strSQL="select * from f_listarHuespedesAlfabeticamente()";
+        try {
+            objConexion.conectarBD();
+            con=objConexion.getCon();
+            cs= con.prepareCall(strSQL);
+            rs=cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error al ejecutar la función!");
+        }finally{
+            objConexion.desconectarBD();
+        }
+    }
+    
+
+    public ResultSet listarHespedEstado(Boolean est) throws Exception {
+        CallableStatement cs = null;
+        strSQL = "select * from f_listarEstado(" + est + ")";
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error al listar huesped por estado");
+        } finally {
+            objConexion.desconectarBD();
+            cs.close();
+        }
+    }
+    
+    public String eliminarH(String doc) throws Exception{
+        strSQL="select f_EliminarHuesped('"+doc+"')";
+        try{
+            objConexion.conectarBD();
+            con=objConexion.getCon();
+            cs=con.prepareCall(strSQL);
+            rs=cs.executeQuery();
+            if(rs.next()){
+                return rs.getString("f_EliminarHuesped");
+            }
+        }catch(Exception e){
+            throw new Exception("Error al ejecutar funcion");
+        }finally{
+            objConexion.desconectarBD();
+            cs.close();
+        }
+        return "";
+        
+    }
+   
+     
+
 }

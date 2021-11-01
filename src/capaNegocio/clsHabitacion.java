@@ -7,6 +7,7 @@ package capaNegocio;
 
 import capaDatos.clsJDBCConexion;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,6 +19,9 @@ public class clsHabitacion {
     String strSQL;
 //    Statement sent;
     ResultSet rs = null;
+    CallableStatement cs = null;
+
+    Connection con;
 
     public ResultSet listarHabitacion() throws Exception {
         strSQL = "select H.*,th.nombre as nombreth from habitacion h inner join tipo_habitacion th on h.codtipohabitacion = th.codtipohabitacion;";
@@ -109,6 +113,28 @@ public class clsHabitacion {
             objConexion.ejecutarBD(strSQL);
         } catch (Exception e) {
             throw new Exception("Error  al modificar  Habitacion");
+
+        }
+
+    }
+
+    public void darDeBajaHabitacion_Transaccion(Integer cod) throws Exception {
+        ArrayList consultas = new ArrayList();
+        consultas.add((String) "update habitacion set  estado='M' where codhabitacion=" + cod + "");
+        strSQL = "select count(*)-1=(select count(*) from habitacion where codtipohabitacion=(select codtipohabitacion from habitacion where codhabitacion=" + cod + ") and estado='M' )as verificacion from habitacion where codtipohabitacion=(select codtipohabitacion from habitacion where codhabitacion=" + cod + ")";
+        rs = objConexion.consultarBD(strSQL);
+
+        try {
+            if (rs.next()) {
+                if (rs.getBoolean("verificacion")) {
+                    consultas.add((String) "update tipo_habitacion set vigencia=false where codtipohabitacion=(select codtipohabitacion from habitacion where codhabitacion=" + cod + ")");
+
+                }
+            }
+            objConexion.ejecutartBDTransacciones(consultas);
+
+        } catch (Exception e) {
+            throw new Exception("Error  al dar de baja  Habitacion");
 
         }
 
@@ -228,6 +254,67 @@ public class clsHabitacion {
         } catch (Exception e) {
             throw new Exception("Error  al listar Habitaciones por tipo");
 
+        }
+
+    }
+
+    //FUNCIONES
+    public int totalHab() throws Exception {
+        strSQL = "select f_totalHab()";
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            rs = cs.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("f_totalHab");
+            }
+        } catch (Exception e) {
+            throw new Exception("Error al ejecutar la funcion");
+
+        } finally {
+            objConexion.desconectarBD();
+            rs.close();
+            cs.close();
+        }
+        return 0;
+    }
+
+    public ResultSet listarHabitacionPorTipo(Integer tipoHab) throws Exception {
+        strSQL = "select * from f_listarHabPorTipo(" + tipoHab + ");";
+
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones");
+
+        }finally {
+            objConexion.desconectarBD();
+            cs.close();
+        }
+
+    }
+    
+    public ResultSet listarHabitacionPorTipoPar(Integer tipoHab) throws Exception {
+        strSQL = "select * from f_listarHabPorTipo(?);";
+
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            cs.setInt(1,tipoHab);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones");
+
+        }finally {
+            objConexion.desconectarBD();
+            cs.close();
         }
 
     }

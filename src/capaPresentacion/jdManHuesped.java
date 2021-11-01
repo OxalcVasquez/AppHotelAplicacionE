@@ -67,6 +67,8 @@ public class jdManHuesped extends javax.swing.JDialog {
         jLabel13 = new javax.swing.JLabel();
         txtPais = new javax.swing.JTextField();
         txtCiudad = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         btnModificar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
@@ -192,6 +194,20 @@ public class jdManHuesped extends javax.swing.JDialog {
         jLabel13.setForeground(new java.awt.Color(51, 0, 153));
         jLabel13.setText("País:");
 
+        jButton1.setText("Listar Alfabeticamente");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Listar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -235,23 +251,33 @@ public class jdManHuesped extends javax.swing.JDialog {
                     .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(cboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel4))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel13))
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(cboSexo, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel4))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel13))
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(chkEstado))
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(chkEstado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(163, 163, 163))))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGap(300, 300, 300)
+                    .addComponent(jButton2)
+                    .addContainerGap(365, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -304,11 +330,17 @@ public class jdManHuesped extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15)
+                .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(chkEstado))
-                .addGap(103, 103, 103))
+                    .addComponent(chkEstado)
+                    .addComponent(jButton1))
+                .addGap(99, 99, 99))
+            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addContainerGap(439, Short.MAX_VALUE)
+                    .addComponent(jButton2)
+                    .addGap(89, 89, 89)))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -519,7 +551,7 @@ public class jdManHuesped extends javax.swing.JDialog {
 
             }
 
-            listarEmpleado();
+            listarHuesped(objHuesped.listarHuesped());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
@@ -599,15 +631,18 @@ public class jdManHuesped extends javax.swing.JDialog {
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     public void limpiarControles() {
-        txtCodigoHuesped.setText("");
-        txtNombre.setText("");
-        txtApellidos.setText("");
-        txtDireccion.setText("");
-        txtCiudad.setText("");
-        txtPais.setText("");
-        txtTelefono.setText("");
-        txtCorreo.setText("");
-        listarEmpleado();
+        try {
+            txtCodigoHuesped.setText("");
+            txtNombre.setText("");
+            txtApellidos.setText("");
+            txtDireccion.setText("");
+            txtCiudad.setText("");
+            txtPais.setText("");
+            txtTelefono.setText("");
+            txtCorreo.setText("");
+            listarHuesped(objHuesped.listarHuesped());
+        } catch (Exception e) {
+        }
 
     }
     private void btnDarDeBajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDarDeBajaActionPerformed
@@ -637,7 +672,9 @@ public class jdManHuesped extends javax.swing.JDialog {
         try {
 
             if (!txtCodigoHuesped.getText().isEmpty()) {
-                objHuesped.eliminarHuesped(Integer.parseInt(txtCodigoHuesped.getText()));
+                String cliente = objHuesped.eliminarHuespedDNI(txtNroDoc.getText());
+                JOptionPane.showMessageDialog(this, cliente);
+//                objHuesped.eliminarHuesped(Integer.parseInt(txtCodigoHuesped.getText()));
 
             } else {
                 JOptionPane.showMessageDialog(this, "Ingrese codigo del husped a eliminar");
@@ -651,8 +688,7 @@ public class jdManHuesped extends javax.swing.JDialog {
 
 
     }//GEN-LAST:event_btnEliminarActionPerformed
-    public void listarEmpleado() {
-        ResultSet rsLista = null;
+    public void listarHuesped(ResultSet rsLista) {
         String td = "";
         DefaultTableModel model = new DefaultTableModel();
         model.addColumn("Codigo");
@@ -671,7 +707,6 @@ public class jdManHuesped extends javax.swing.JDialog {
         tblDatos.setModel(model);
         try {
             //DNI, Pasaporte, Carnet Extranjería, Libreta Militar
-            rsLista = objHuesped.listarHuesped();
             while (rsLista.next()) {
 
                 if (rsLista.getString("tipodocumento").equals("D")) {
@@ -727,8 +762,25 @@ public class jdManHuesped extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
-        listarEmpleado();
+        try {
+            listarHuesped(objHuesped.listarHuesped());
+        } catch (Exception e) {
+        }
+
     }//GEN-LAST:event_formWindowOpened
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            listarHuesped(objHuesped.listarHuespedAlfabeticamente());
+        } catch (Exception e) {
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -782,6 +834,8 @@ public class jdManHuesped extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cboSexo;
     private javax.swing.JComboBox<String> cboTipoDoc;
     private javax.swing.JCheckBox chkEstado;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

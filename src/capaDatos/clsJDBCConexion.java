@@ -1,6 +1,7 @@
 package capaDatos;
 
 import java.sql.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -10,6 +11,8 @@ import javax.swing.JOptionPane;
 public class clsJDBCConexion {
 
     private String driver, url, user, password;
+    String strSQL1, strSQL2;
+
     private Connection con;
     private Statement sent = null;
 
@@ -90,5 +93,79 @@ public class clsJDBCConexion {
 
         }
 
+    }
+
+        public void ejecutartBDTransacciones(ArrayList arregloConsulta) throws Exception{
+        
+        try {
+            conectarBD();
+            con.setAutoCommit(false);//Iniciar la transaccion
+            sent = con.createStatement();
+            for (Object consulta:arregloConsulta) {
+                sent.executeUpdate((String)consulta);
+                
+            }
+            //todas las sentencias de la transaccion
+            con.commit();
+            con.setAutoCommit(true); //Finaliza o desactiva el manejo de transaccion
+
+        } catch (Exception e) {
+            con.rollback();
+            throw new Exception("Error al ejecutar la transaccion... ");
+
+        }finally {
+            if (con != null) {
+                desconectarBD();
+            }
+
+        }
+    
+    }
+    //Setencias independientes
+    public void ejecutarSenteciasBD() throws Exception {
+        strSQL1 = "delete from habitacion where codtipohabitacion=4";
+        strSQL2 = "delete from tipo_habitacion where codtipohabitacion=4";
+
+        try {
+            ejecutarBD(strSQL1);
+            ejecutarBD(strSQL2);
+
+        } catch (Exception e) {
+            throw new Exception("Error al ejecutar una de las consultas... ");
+
+        }
+
+    }
+    //Sentencias
+    public void ejecutarTransaccion() throws Exception {
+        strSQL1 = "delete from habitacion where codtipohabitacion=4";
+        strSQL2 = "delete from tipo_habitacion where codtipohabitacion=4";
+
+        try {
+            conectarBD();
+            con.setAutoCommit(false);
+            sent = con.createStatement();
+            sent.executeUpdate(strSQL1);
+            sent = con.createStatement();
+            sent.executeUpdate(strSQL2);
+            //todas las sentencias de la transaccion
+            con.commit();
+            con.setAutoCommit(true); //Finaliza o desactiva el manejo de transaccion
+
+        } catch (Exception e) {
+            con.rollback();
+            throw new Exception("Error al ejecutar la transaccion... ");
+
+        }finally {
+            if (con != null) {
+                desconectarBD();
+            }
+
+        }
+
+    }
+
+    public Connection getCon(){
+        return con;
     }
 }

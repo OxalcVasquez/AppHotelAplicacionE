@@ -762,7 +762,7 @@ public class jdHospedaje extends javax.swing.JDialog {
         try {
 
             if (!txtNumHospedaje.getText().isEmpty()) {
-                objHospedaje.eliminarHospedaje(Integer.parseInt(txtNumHospedaje.getText()));
+                objHospedaje.eliminarHospedajeF(Integer.parseInt(txtNumHospedaje.getText()));
                         
                 listarHospedajes();
 

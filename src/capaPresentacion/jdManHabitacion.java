@@ -54,6 +54,7 @@ public class jdManHabitacion extends javax.swing.JDialog {
         spnCapacidad = new javax.swing.JSpinner();
         jLabel8 = new javax.swing.JLabel();
         cboTipoHabitacion = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         btnModificar = new javax.swing.JButton();
         btnNuevo = new javax.swing.JButton();
@@ -63,6 +64,8 @@ public class jdManHabitacion extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHabitacion = new javax.swing.JTable();
+        jLabel9 = new javax.swing.JLabel();
+        txtTotalHabitaciones = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Gestionar Tipo de Habitacion");
@@ -117,6 +120,13 @@ public class jdManHabitacion extends javax.swing.JDialog {
         jLabel8.setForeground(new java.awt.Color(51, 0, 153));
         jLabel8.setText("Capacidad:");
 
+        jButton1.setText("Listar por tipo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -136,21 +146,27 @@ public class jdManHabitacion extends javax.swing.JDialog {
                             .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(spnCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(cboEstado, javax.swing.GroupLayout.Alignment.LEADING, 0, 166, Short.MAX_VALUE)
-                        .addComponent(cboTipoHabitacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnBuscar)))
-                .addContainerGap(74, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(cboEstado, javax.swing.GroupLayout.Alignment.LEADING, 0, 166, Short.MAX_VALUE)
+                            .addComponent(cboTipoHabitacion, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(spnCapacidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnBuscar))
+                            .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(157, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -186,8 +202,10 @@ public class jdManHabitacion extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
-                    .addComponent(cboTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cboTipoHabitacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jButton1)))
+                .addGap(42, 42, 42))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -290,21 +308,39 @@ public class jdManHabitacion extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tblHabitacion);
 
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("TOTAL  HABITACIONES:");
+
+        txtTotalHabitaciones.setEditable(false);
+        txtTotalHabitaciones.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel9)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtTotalHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtTotalHabitaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -491,7 +527,7 @@ public class jdManHabitacion extends javax.swing.JDialog {
 
             if (!txtCodigo.getText().isEmpty()) {
                 if (objHabitacion.verificarDisponibilidad(Integer.parseInt(txtCodigo.getText()))) {
-                    objHabitacion.darDeBajaHabitacion(Integer.parseInt(txtCodigo.getText()));
+                    objHabitacion.darDeBajaHabitacion_Transaccion(Integer.parseInt(txtCodigo.getText()));
                     limpiarControles();
                     listarHabitaciones();
 
@@ -510,6 +546,50 @@ public class jdManHabitacion extends javax.swing.JDialog {
 
 
     }//GEN-LAST:event_btnDarDeBajaActionPerformed
+    
+    public void listarHabitacionesPorTipo() {
+        ResultSet rsHab = null;
+        String estado = "";
+        DefaultTableModel modeloHab = new DefaultTableModel();
+        modeloHab.addColumn("Código");
+        modeloHab.addColumn("Número");
+        modeloHab.addColumn("Nombre");
+        modeloHab.addColumn("Descripcion");
+        modeloHab.addColumn("Estado");
+        modeloHab.addColumn("Capacidad");
+        modeloHab.addColumn("Tipo Hab.");
+
+        tblHabitacion.setModel(modeloHab);
+
+        try {
+            rsHab = objHabitacion.listarHabitacionPorTipoPar(objTH.obtenerCodigoTH(cboTipoHabitacion.getSelectedItem().toString()));
+            while (rsHab.next()) {
+                estado = rsHab.getString("estado");
+                if (estado.equals("D")) {
+                    estado = "Disponible";
+                }
+                if (estado.equals("O")) {
+                    estado = "Ocupada";
+                }
+                if (estado.equals("M")) {
+                    estado = "Mantenimiento";
+                }
+                modeloHab.addRow(new Object[]{
+                    rsHab.getInt("codhabitacion"),
+                    rsHab.getInt("numero"),
+                    rsHab.getString("nombre"),
+                    rsHab.getString("descripcion"),
+                    estado,
+                    rsHab.getInt("capacidad"),
+                    rsHab.getString("nombreth"),});
+            }
+            txtTotalHabitaciones.setText(String.valueOf(objHabitacion.totalHab()));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+
+    }
+    
     public void listarHabitaciones() {
         ResultSet rsHab = null;
         String estado = "";
@@ -546,6 +626,7 @@ public class jdManHabitacion extends javax.swing.JDialog {
                     rsHab.getInt("capacidad"),
                     rsHab.getString("nombreth"),});
             }
+            txtTotalHabitaciones.setText(String.valueOf(objHabitacion.totalHab()));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
@@ -584,6 +665,15 @@ public class jdManHabitacion extends javax.swing.JDialog {
         txtCosto.setText(String.valueOf(tblTipoH.getValueAt(tblTipoH.getSelectedRow(), 3)));
          */
     }//GEN-LAST:event_tblHabitacionMouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        try {
+            listarHabitacionesPorTipo();
+        } catch (Exception e) {
+        }
+            
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -637,6 +727,7 @@ public class jdManHabitacion extends javax.swing.JDialog {
     private javax.swing.JButton btnSalir;
     private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JComboBox<String> cboTipoHabitacion;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -644,6 +735,7 @@ public class jdManHabitacion extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -655,5 +747,6 @@ public class jdManHabitacion extends javax.swing.JDialog {
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNumero;
+    private javax.swing.JTextField txtTotalHabitaciones;
     // End of variables declaration//GEN-END:variables
 }

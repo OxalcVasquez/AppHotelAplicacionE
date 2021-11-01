@@ -14,15 +14,17 @@ import java.sql.*;
  */
 public class clsUsuario {
 
-    private clsJDBCConexion objConectar = new clsJDBCConexion();
+    private clsJDBCConexion objConexion = new clsJDBCConexion();
     private String strSQL = "";
     private ResultSet rs = null;
+    CallableStatement cs = null;
+    Connection con;
 
     //Método de Inicio de Sesión
     public String inicioSesion(String usu, String con) throws Exception {
         strSQL = "select nombresCompleto from usuario where nomusu='" + usu + "' and con='" + con + "'";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 return rs.getString("nombresCompleto");
             }
@@ -32,11 +34,11 @@ public class clsUsuario {
         }
         return "";
     }
-    
-     public String usuInicioSesion(String usu) throws Exception {
+
+    public String usuInicioSesion(String usu) throws Exception {
         strSQL = "select nombresCompleto from usuario where nomusu='" + usu + "'";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 return rs.getString("nombresCompleto");
             }
@@ -51,7 +53,7 @@ public class clsUsuario {
     public String preguntaSecreta(String usu) throws Exception {
         strSQL = "select pregunta from usuario where nomusu='" + usu + "'";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 return rs.getString("pregunta");
             }
@@ -66,7 +68,7 @@ public class clsUsuario {
     public Boolean validarVigencia(String usu) throws Exception {
         strSQL = "select estado from usuario where nomusu='" + usu + "'";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 return rs.getBoolean("estado");
             }
@@ -80,7 +82,7 @@ public class clsUsuario {
     public int validarVigenciaExistencia(String usu) throws Exception {
         strSQL = "select estado from usuario where nomusu='" + usu + "'";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 if (rs.getBoolean("estado")) {
                     return 0; //Vigente
@@ -99,7 +101,7 @@ public class clsUsuario {
     public Boolean validarPregunta(String usu, String rpta) throws Exception {
         strSQL = "select * from usuario where nomusu='" + usu + "' and upper(respuesta)=upper('" + rpta + "')";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 return true;
             } else {
@@ -116,7 +118,7 @@ public class clsUsuario {
     public void modificarContrasena(String usu, String con) throws Exception {
         strSQL = "update usuario set con='" + con + "' where nomusu = '" + usu + "'";
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConexion.ejecutarBD(strSQL);
         } catch (Exception e) {
             throw new Exception(e.getMessage());
 
@@ -124,4 +126,49 @@ public class clsUsuario {
 
     }
 
+    public Boolean modificar(String ncon, String usu) throws Exception {
+        strSQL = "{? = call f_cambiar_contrasena(?,?)}";
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            cs.setString(2, ncon);
+            cs.setString(3, usu);
+            cs.registerOutParameter(1, Types.BOOLEAN);
+            cs.execute();
+            return cs.getBoolean(1);
+
+        } catch (Exception e) {
+            throw new Exception("Error al cambiar");
+
+        } finally {
+            objConexion.desconectarBD();
+            cs.close();
+        }
+
+    }
+
+    private String cambiarContra(String contra, String user) throws Exception{
+         strSQL = "{call f_cambiarContraseña(?,?)}";
+        try {
+            objConexion.conectarBD(); //ConectaBd
+            con = objConexion.getCon(); //Jala Conexión de CapaDatos
+            cs = con.prepareCall(strSQL);//Prepara la función
+            cs.setString(1,contra);
+            cs.setString(2,user);
+            cs.registerOutParameter(1, Types.VARCHAR);
+            cs.executeUpdate();
+            String respuesta=cs.getString(1);
+            return respuesta;
+        } catch (Exception e) {
+            throw new Exception("Error al ejecutar la función\n" + e);
+        } finally { //Siempre que crea una conexión hay que liberar memoria.
+            objConexion.desconectarBD(); //con.close()
+            cs.close();
+            //rs.close(); si returnas resulset no se cierra el ResultSet
+        }
+        
+    }
+
+    
 }

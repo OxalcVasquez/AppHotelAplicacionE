@@ -17,6 +17,8 @@ public class clsHospedaje {
     clsJDBCConexion objConectar = new clsJDBCConexion();
     String strSQL = "";
     ResultSet rs = null;
+    CallableStatement cs = null;
+    Connection con;
 
     public Integer generarNumHospedaje() throws Exception {
         strSQL = "select COALESCE(max(numhospedaje),0)+1 as numero from hospedaje";
@@ -78,8 +80,8 @@ public class clsHospedaje {
 
     public void modificarHospedaje(Integer num, String fecInicio, String fecFin, String mot, Double cos, Integer codHue, String dniEm, Integer codHabitacion, String obs) throws Exception {
         strSQL = "UPDATE hospedaje SET  fechainicio='" + fecInicio + "', fechafin='" + fecFin + "', motivo='" + mot + "', costo=" + cos + ", codhuesped=" + codHue + ", dniempleado='" + dniEm + "', codhabitacion=" + codHabitacion + ", observacion=' " + obs + "'"
-                + " WHERE numhospedaje="+num;
-  
+                + " WHERE numhospedaje=" + num;
+
         try {
             objConectar.ejecutarBD(strSQL);
 
@@ -87,13 +89,26 @@ public class clsHospedaje {
             throw new Exception("Error al modificar el hospedaje");
         }
     }
-    
-     public void eliminarHospedaje(Integer num) throws Exception {
-        strSQL = "DELETE FROM  hospedaje WHERE numhospedaje="+num;
-  
+
+    public void eliminarHospedaje(Integer num) throws Exception {
+        strSQL = "DELETE FROM  hospedaje WHERE numhospedaje=" + num;
+
         try {
             objConectar.ejecutarBD(strSQL);
 
+        } catch (Exception e) {
+            throw new Exception("Error al eliminar el hospedaje");
+        }
+    }
+
+    public void eliminarHospedajeF(Integer num) throws Exception {
+        strSQL = "{call f_eliminar_hospedaje(?)}";
+        try {
+            objConectar.conectarBD(); //ConectaBd
+            con = objConectar.getCon(); //Jala Conexión de CapaDatos
+            cs = con.prepareCall(strSQL);//Prepara la función
+            cs.setInt(1, num);;
+            cs.executeUpdate();
         } catch (Exception e) {
             throw new Exception("Error al eliminar el hospedaje");
         }
