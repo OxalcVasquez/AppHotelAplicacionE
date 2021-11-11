@@ -32,35 +32,35 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
     public jdConsultaHabitacion(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        jdcInicio.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent pce) {
-                try {
-                    // TODO add your handling code here:
-                    String fechaI = sdf.format(jdcInicio.getDate());
-                    String fechaF = sdf.format(jdcFin.getDate());
-                    listarHabitaciones(objHabitacion.listarHabitacionPorTipoFechas(cboTipoHabitacion.getSelectedItem().toString(), fechaI, fechaF));
-
-                } catch (Exception ex) {
-//                    Logger.getLogger(jdRegistroCitas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        
-        jdcFin.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent pce) {
-                try {
-                    // TODO add your handling code here:
-                    String fechaI = sdf.format(jdcInicio.getDate());
-                    String fechaF = sdf.format(jdcFin.getDate());
-                    listarHabitaciones(objHabitacion.listarHabitacionPorTipoFechas(cboTipoHabitacion.getSelectedItem().toString(), fechaI, fechaF));
-
-                } catch (Exception ex) {
-//                    Logger.getLogger(jdRegistroCitas.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+//        jdcInicio.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+//            @Override
+//            public void propertyChange(PropertyChangeEvent pce) {
+//                try {
+//                    // TODO add your handling code here:
+//                    String fechaI = sdf.format(jdcInicio.getDate());
+//                    String fechaF = sdf.format(jdcFin.getDate());
+//                    listarHabitaciones(objHabitacion.listarHabitacionPorTipoFechas(fechaI, fechaF));
+//
+//                } catch (Exception ex) {
+////                    Logger.getLogger(jdRegistroCitas.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
+//
+//        jdcFin.getDateEditor().addPropertyChangeListener(new PropertyChangeListener() {
+//            @Override
+//            public void propertyChange(PropertyChangeEvent pce) {
+//                try {
+//                    // TODO add your handling code here:
+//                    String fechaI = sdf.format(jdcInicio.getDate());
+//                    String fechaF = sdf.format(jdcFin.getDate());
+//                    listarHabitaciones(objHabitacion.listarHabitacionPorTipoFechas(fechaI, fechaF));
+//
+//                } catch (Exception ex) {
+////                    Logger.getLogger(jdRegistroCitas.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        });
     }
 
     /**
@@ -83,6 +83,7 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jdcInicio = new com.toedter.calendar.JDateChooser();
+        btnFechas = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblHabitacion = new javax.swing.JTable();
@@ -129,6 +130,13 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
         jLabel9.setForeground(new java.awt.Color(51, 0, 153));
         jLabel9.setText("Fecha Fin:");
 
+        btnFechas.setText("Listar por fechas");
+        btnFechas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFechasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -156,6 +164,10 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
                                 .addGap(35, 35, 35)
                                 .addComponent(jdcFin, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(43, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFechas)
+                .addGap(317, 317, 317))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,7 +196,9 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jLabel8)))))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addComponent(btnFechas)
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(0, 102, 255));
@@ -253,7 +267,8 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
             } else {
                 ResultSet rsHabitacion = null;
 
-                rsHabitacion = objHabitacion.buscarHabitacion(Integer.parseInt(txtNumero.getText()));
+                rsHabitacion = objHabitacion.buscarHabitacionFn(Integer.parseInt(txtNumero.getText()));
+                listarHabitaciones(rsHabitacion);
                 if (rsHabitacion.next()) {
 
                     String estado = rsHabitacion.getString("estado").equals("D") ? "Disponible" : rsHabitacion.getString("estado").equals("O") ? "Ocupada" : "Mantenimiento";
@@ -379,11 +394,26 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
     private void cboTipoHabitacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTipoHabitacionActionPerformed
         // TODO add your handling code here:
         try {
-            listarHabitaciones(objHabitacion.listarHabitacionPorTipo(cboTipoHabitacion.getSelectedItem().toString()));
+            listarHabitaciones(objHabitacion.listarHabitacionPorTipoDisponibles(cboTipoHabitacion.getSelectedItem().toString()));
 
         } catch (Exception e) {
         }
     }//GEN-LAST:event_cboTipoHabitacionActionPerformed
+
+    private void btnFechasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFechasActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            String fechaI = sdf.format(jdcInicio.getDate());
+            String fechaF = sdf.format(jdcFin.getDate());
+
+            listarHabitaciones(objHabitacion.listarHabFechas(fechaI, fechaF));
+
+        } catch (Exception ex) {
+//                    Logger.getLogger(jdRegistroCitas.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }//GEN-LAST:event_btnFechasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -432,6 +462,7 @@ public class jdConsultaHabitacion extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnFechas;
     private javax.swing.JComboBox<String> cboTipoHabitacion;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;

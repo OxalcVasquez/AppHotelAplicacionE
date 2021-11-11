@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a0c13b4-d1a7-44f9-84df-8ec008d0c452">
+	<property name="ireport.zoom" value="1.4641000000000017"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from tipo_habitacion;]]>
+	</queryString>
+	<field name="codtipohabitacion" class="java.lang.Integer"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="vigencia" class="java.lang.Boolean"/>
+	<field name="costo" class="java.math.BigDecimal"/>
+	<variable name="codtipohabitacion_1" class="java.lang.Integer" resetType="Column" calculation="Sum">
+		<variableExpression><![CDATA[$F{codtipohabitacion}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="62" splitType="Stretch">
+			<staticText>
+				<reportElement x="149" y="28" width="273" height="34" uuid="ae8dc5d6-5188-484a-a153-c408eac06e9d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE TIPOS DE HABITACION]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="10" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<staticText>
+				<reportElement x="244" y="21" width="100" height="20" uuid="bd4a21f0-0d77-417d-b8b3-823ccfddb79b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="360" y="22" width="77" height="20" uuid="e101c896-f7a0-47c1-92cf-d164050cac85"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Vigencia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="12" y="22" width="51" height="20" uuid="be59acd2-6ea2-4234-a0f8-654afcc5a0b4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="131" y="21" width="51" height="20" uuid="a755cc9a-e2fe-4c5f-afa3-55fea7876a1c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Nombre]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="454" y="22" width="77" height="20" uuid="1c04f4a9-7efb-4cea-819e-d4b7a85fa847"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[Costo]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="41" width="554" height="1" forecolor="#FF6633" uuid="8a5146dd-ccc7-41fd-894f-68917eee5594"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="30" splitType="Stretch">
+			<textField>
+				<reportElement x="12" y="6" width="51" height="20" uuid="44b0fbda-8bc7-401a-b942-0d41b22160dc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{codtipohabitacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="96" y="6" width="121" height="20" uuid="90eb8611-be65-49b5-99f4-4abadb28b6c1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="244" y="6" width="100" height="20" uuid="843091b4-3adb-4b6f-aab1-66b35b4ef58c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="6" width="77" height="20" uuid="674e75bd-3fb7-422e-bd68-134aaef124e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{vigencia}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="454" y="6" width="77" height="20" uuid="977fa552-2cc6-4169-9ced-7f5e27dceaf7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{costo}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="26" width="554" height="1" forecolor="#0000CC" uuid="86e73619-39e0-4b6c-ab0c-7eaf6f17e79e"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

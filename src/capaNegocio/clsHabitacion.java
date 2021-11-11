@@ -123,7 +123,6 @@ public class clsHabitacion {
         consultas.add((String) "update habitacion set  estado='M' where codhabitacion=" + cod + "");
         strSQL = "select count(*)-1=(select count(*) from habitacion where codtipohabitacion=(select codtipohabitacion from habitacion where codhabitacion=" + cod + ") and estado='M' )as verificacion from habitacion where codtipohabitacion=(select codtipohabitacion from habitacion where codhabitacion=" + cod + ")";
         rs = objConexion.consultarBD(strSQL);
-
         try {
             if (rs.next()) {
                 if (rs.getBoolean("verificacion")) {
@@ -240,19 +239,19 @@ public class clsHabitacion {
 
     }
 
-    public ResultSet listarHabitacionPorTipoFechas(String tipo, String fechaI, String fechaF) throws Exception {
+    public ResultSet listarHabitacionPorFechas(String fechaI, String fechaF) throws Exception {
 
         strSQL = " select distinct h.*,th.nombre from habitacion H inner join tipo_habitacion TH on H.codtipohabitacion=TH.codtipohabitacion\n"
-                + " where H.estado='D' and th.nombre = '" + tipo + "' and h.codhabitacion not in (select distinct h.codhabitacion from habitacion H \n"
-                + " inner join tipo_habitacion TH on H.codtipohabitacion=TH.codtipohabitacion\n"
-                + " inner join reserva R on R.codhabitacion=H.codhabitacion\n"
-                + " where th.nombre = 'Simple' and r.fechainicio>='" + fechaI + "' \n"
+                + " where H.estado='D' and h.codhabitacion not in (select distinct h.codhabitacion from habitacion H "
+                + " inner join tipo_habitacion TH on H.codtipohabitacion=TH.codtipohabitacion "
+                + " inner join reserva R on R.codhabitacion=H.codhabitacion "
+                + " where th.nombre = 'Simple' and r.fechainicio>='" + fechaI + "' "
                 + " and  r.fechainicio + r.cantidaddias <='" + fechaF + ")";
         try {
             rs = objConexion.consultarBD(strSQL);
             return rs;
         } catch (Exception e) {
-            throw new Exception("Error  al listar Habitaciones por tipo");
+            throw new Exception("Error  al listar habitaciones por fechas");
 
         }
 
@@ -292,13 +291,13 @@ public class clsHabitacion {
         } catch (Exception e) {
             throw new Exception("Error  al listar Habitaciones");
 
-        }finally {
+        } finally {
             objConexion.desconectarBD();
             cs.close();
         }
 
     }
-    
+
     public ResultSet listarHabitacionPorTipoPar(Integer tipoHab) throws Exception {
         strSQL = "select * from f_listarHabPorTipo(?);";
 
@@ -306,17 +305,63 @@ public class clsHabitacion {
             objConexion.conectarBD();
             con = objConexion.getCon();
             cs = con.prepareCall(strSQL);
-            cs.setInt(1,tipoHab);
+            cs.setInt(1, tipoHab);
             rs = cs.executeQuery();
             return rs;
         } catch (Exception e) {
             throw new Exception("Error  al listar Habitaciones");
 
-        }finally {
+        } finally {
             objConexion.desconectarBD();
             cs.close();
         }
 
     }
 
+    //Funciones laboratroio
+    public ResultSet listarHabitacionPorTipoDisponibles(String tipo) throws Exception {
+        strSQL = " select * from f_listarHabTipoDis(?)";
+
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            cs.setString(1, tipo);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar Habitaciones por tipo");
+
+        }
+
+    }
+
+    public ResultSet buscarHabitacionFn(Integer num) throws Exception {
+        strSQL = " select * from f_buscarHabNum(?)";
+
+        try {
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            cs.setInt(1, num);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al buscar habitacion");
+
+        }
+
+    }
+
+    public ResultSet listarHabFechas(String fechaI, String fechaF) throws Exception {
+        strSQL = "select * from f_buscarHabPorFechas('" + fechaI + "','" + fechaF + "')";
+
+        try {
+            rs = objConexion.consultarBD(strSQL);
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar por fechas");
+
+        }
+    }
 }

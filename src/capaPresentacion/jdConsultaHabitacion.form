@@ -98,6 +98,11 @@
                   </Group>
                   <EmptySpace pref="43" max="32767" attributes="0"/>
               </Group>
+              <Group type="102" alignment="1" attributes="0">
+                  <EmptySpace max="32767" attributes="0"/>
+                  <Component id="btnFechas" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="317" max="-2" attributes="0"/>
+              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -137,7 +142,9 @@
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="49" max="32767" attributes="0"/>
+                  <EmptySpace pref="11" max="32767" attributes="0"/>
+                  <Component id="btnFechas" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -221,6 +228,14 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="jdcInicio">
+        </Component>
+        <Component class="javax.swing.JButton" name="btnFechas">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Listar por fechas"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFechasActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

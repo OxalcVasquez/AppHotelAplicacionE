@@ -7,6 +7,7 @@ package capaNegocio;
 
 import capaDatos.clsJDBCConexion;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.sql.*;
  */
 public class clsHospedaje {
 
-    clsJDBCConexion objConectar = new clsJDBCConexion();
+    clsJDBCConexion objConexion = new clsJDBCConexion();
     String strSQL = "";
     ResultSet rs = null;
     CallableStatement cs = null;
@@ -23,7 +24,7 @@ public class clsHospedaje {
     public Integer generarNumHospedaje() throws Exception {
         strSQL = "select COALESCE(max(numhospedaje),0)+1 as numero from hospedaje";
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             if (rs.next()) {
                 return rs.getInt("numero");
             }
@@ -40,7 +41,7 @@ public class clsHospedaje {
                 + " VALUES (" + num + ",'" + fecInicio + "','" + fecFin + "','" + mot + "'," + cos + ", true, false, " + codHue + ", '" + dniEm + "'," + codHabitacion + ",' " + obs + "')";
 
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConexion.ejecutarBD(strSQL);
 
         } catch (Exception e) {
             throw new Exception("Error al  el registrar el hospedaje");
@@ -53,7 +54,7 @@ public class clsHospedaje {
                 + " inner join empleado E on H.dniempleado=E.dniempleado inner join habitacion HA on H.codhabitacion=HA.codhabitacion";
 
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             return rs;
         } catch (Exception e) {
             throw new Exception("Error  al listar hospedjaes");
@@ -69,7 +70,7 @@ public class clsHospedaje {
                 + " where H.numhospedaje=" + num;
 
         try {
-            rs = objConectar.consultarBD(strSQL);
+            rs = objConexion.consultarBD(strSQL);
             return rs;
         } catch (Exception e) {
             throw new Exception("Error  al buscar hospedjaes");
@@ -83,7 +84,7 @@ public class clsHospedaje {
                 + " WHERE numhospedaje=" + num;
 
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConexion.ejecutarBD(strSQL);
 
         } catch (Exception e) {
             throw new Exception("Error al modificar el hospedaje");
@@ -94,7 +95,7 @@ public class clsHospedaje {
         strSQL = "DELETE FROM  hospedaje WHERE numhospedaje=" + num;
 
         try {
-            objConectar.ejecutarBD(strSQL);
+            objConexion.ejecutarBD(strSQL);
 
         } catch (Exception e) {
             throw new Exception("Error al eliminar el hospedaje");
@@ -104,8 +105,8 @@ public class clsHospedaje {
     public void eliminarHospedajeF(Integer num) throws Exception {
         strSQL = "{call f_eliminar_hospedaje(?)}";
         try {
-            objConectar.conectarBD(); //ConectaBd
-            con = objConectar.getCon(); //Jala Conexión de CapaDatos
+            objConexion.conectarBD(); //ConectaBd
+            con = objConexion.getCon(); //Jala Conexión de CapaDatos
             cs = con.prepareCall(strSQL);//Prepara la función
             cs.setInt(1, num);;
             cs.executeUpdate();
@@ -113,4 +114,69 @@ public class clsHospedaje {
             throw new Exception("Error al eliminar el hospedaje");
         }
     }
+
+    //Funciones Laboratorio : listar hospedajes vigentes
+    public ResultSet listarHospedajeVigentes() throws Exception {
+        strSQL = "select * from f_listarHosVigentes()";
+        try {
+
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar hospedjaes");
+
+        }
+
+    }
+
+    public ResultSet buscasHospedajeFn(Integer num) throws Exception {
+        strSQL = "select * from f_buscarHos(" + num + ")";
+        try {
+
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al buscar hospedjaes");
+
+        }
+
+    }
+
+    //Transaccion finalizas horspedaje
+    public void finalizarHospedaje(Integer num) throws Exception {
+        ArrayList consultas = new ArrayList();
+        consultas.add((String) "update hospedaje set estadohos=false,estadopagohos=true where numhospedaje=" + num + "");
+        consultas.add((String) "update habitacion set  estado='D' where codhabitacion = (select codhabitacion from hospedaje  where numhospedaje=" + num + ")");
+        try {
+            objConexion.ejecutartBDTransacciones(consultas);
+        } catch (Exception e) {
+            throw new Exception("Error  al finalizar hospedaje");
+
+        }
+
+    }
+    
+    //Funncio listar por fecha y estado
+     public ResultSet listarHospedajesPorFechaEst(String fechaI, Boolean est) throws Exception {
+        strSQL = "select * from f_listarHosPorFechaEst('"+fechaI+"',"+est+")";
+        try {
+
+            objConexion.conectarBD();
+            con = objConexion.getCon();
+            cs = con.prepareCall(strSQL);
+            rs = cs.executeQuery();
+            return rs;
+        } catch (Exception e) {
+            throw new Exception("Error  al listar hospedjaes");
+
+        }
+
+    }
+    
 }
